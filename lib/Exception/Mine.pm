@@ -1,5 +1,5 @@
 package Exception::Mine;
-use Moose;
+use Moose::Role;
 with (
   'Throwable',
   'StackTrace::Auto',

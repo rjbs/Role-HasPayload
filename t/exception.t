@@ -7,7 +7,7 @@ use Test::More;
   package Some::Exception;
   use Moose;
 
-  extends 'Exception::Mine';
+  with 'Exception::Mine';
 
   has size => (
     is   => 'ro',
