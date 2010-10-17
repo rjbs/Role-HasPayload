@@ -7,13 +7,13 @@ use Test::More;
   package Some::Exception;
   use Moose;
 
-  with 'Exception::Mine';
+  with 'Throwable::X';
 
   has size => (
     is   => 'ro',
     isa  => 'Int',
     lazy => 1,
-    traits  => [ 'Exception::Mine::Meta::Attribute::Payload' ],
+    traits  => [ 'Throwable::X::Meta::Attribute::Payload' ],
     default => 36,
   );
 
@@ -28,15 +28,16 @@ my $ok = eval {
   Some::Exception->throw({
     ident   => 'pants too small',
     message => "can't fit into pants under %{size;inch}n",
+    tags    => [ qw(foo-bar zug) ],
   });
 };
 
-my $error = $@;
+my $err = $@;
 ok(!$ok, "->throw died");
-isa_ok($error, 'Some::Exception', '...the thrown error');
+isa_ok($err, 'Some::Exception', '...the thrown error');
 
 is_deeply(
-  $error->payload,
+  $err->payload,
   {
     size => 36,
   },
@@ -44,9 +45,14 @@ is_deeply(
 );
 
 is(
-  $error->message,
+  $err->message,
   "can't fit into pants under 36 inches",
   "...and msg formats",
+);
+
+ok(
+  $err->has_tag('foo-bar') && $err->has_tag('zug') && ! $err->has_tag('xyz'),
+  "...and its tags seem correct",
 );
 
 done_testing;

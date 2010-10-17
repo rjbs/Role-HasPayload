@@ -1,14 +1,13 @@
-package Exception::Mine;
+package Throwable::X;
 use Moose::Role;
 with (
   'Throwable',
-  'StackTrace::Auto',
 );
 
 use namespace::autoclean;
 
 use Moose::Util::TypeConstraints -default => { -prefix => 'tc_' };
-use Exception::Mine::Meta::Attribute::Payload;
+use Throwable::X::Meta::Attribute::Payload;
 use Try::Tiny;
 
 use String::Errf qw(errf);
@@ -20,23 +19,27 @@ has is_public => (
   default  => 0,
 );
 
-tc_subtype 'Exception::Mine::_NonEmptyStr',
+tc_subtype 'Throwable::X::_VisibleStr',
   tc_as 'Str',
   tc_where { length };
 
-tc_subtype 'Exception::Mine::_Ident',
-  tc_as 'Exception::Mine::_NonEmptyStr',
-  tc_where { ! /[%\v]/ };
+# We don't want vertical whitespace, but we also don't want it to be a format
+# string, in case we default to it.  Rather than being really cagey and
+# demanding we use %% and then we s/%%/% in the ident, we just forbid it.
+# Let's not be too clever, just yet. -- rjbs, 2010-10-17
+tc_subtype 'Throwable::X::_Ident',
+  tc_as 'Throwable::X::_VisibleStr',
+  tc_where { /\S/ && ! /[%\v]/ };
 
 has ident => (
   is  => 'ro',
-  isa => 'Exception::Mine::_Ident',
+  isa => 'Throwable::X::_Ident',
   required => 1,
 );
 
 has message_fmt => (
   is   => 'ro',
-  isa  => 'Exception::Mine::_NonEmptyStr',
+  isa  => 'Throwable::X::_VisibleStr',
   lazy => 1,
   default  => sub { $_[0]->ident },
   init_arg => 'message',
@@ -58,21 +61,38 @@ sub message {
   return try {
     errf($self->message_fmt, $self->payload)
   } catch {
-    warn $_;
     sprintf '%s (error during formatting)', $self->message_fmt;
   }
 }
 
+tc_subtype 'Throwable::X::_Tag',
+  tc_as 'Str',
+  tc_where { /\A[-a-z0-9]+\z/ };
+
+sub has_tag {
+  my ($self, $tag) = @_;
+
+  $_ eq $tag && return 1 for $self->tags;
+
+  return;
+}
+
+sub tags {
+  my ($self) = @_;
+  return wantarray ? @{ $self->_tags } : $self->_tags->[-1];
+}
+
 has tags => (
-  is  => 'ro',
-  isa => 'ArrayRef',
+  is      => 'ro',
+  isa     => 'ArrayRef[Throwable::X::_Tag]',
+  reader  => '_tags',
   default => sub { [] },
 );
 
 sub payload {
   my ($self) = @_;
 
-  my @attrs = grep { $_->does('Exception::Mine::Meta::Attribute::Payload') }
+  my @attrs = grep { $_->does('Throwable::X::Meta::Attribute::Payload') }
               $self->meta->get_all_attributes;
 
   my %payload = map {;
