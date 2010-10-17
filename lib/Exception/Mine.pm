@@ -20,18 +20,25 @@ has is_public => (
   default  => 0,
 );
 
-tc_subtype 'Exception::Mine::NonEmptyStr', tc_as 'Str', tc_where { length };
+tc_subtype 'Exception::Mine::_NonEmptyStr',
+  tc_as 'Str',
+  tc_where { length };
+
+tc_subtype 'Exception::Mine::_Ident',
+  tc_as 'Exception::Mine::_NonEmptyStr',
+  tc_where { ! /[%\v]/ };
 
 has ident => (
   is  => 'ro',
-  isa => 'Exception::Mine::NonEmptyStr',
-  required => 1
+  isa => 'Exception::Mine::_Ident',
+  required => 1,
 );
 
 has message_fmt => (
-  is  => 'ro',
-  isa => 'Str',
-  required => 1,
+  is   => 'ro',
+  isa  => 'Exception::Mine::_NonEmptyStr',
+  lazy => 1,
+  default  => sub { $_[0]->ident },
   init_arg => 'message',
 );
 
