@@ -1,6 +1,5 @@
 package Throwable::X;
 use Moose::Role;
-with 'Throwable';
 # ABSTRACT: useful eXtra behavior for Throwable exceptions
 
 use namespace::autoclean;
@@ -10,29 +9,6 @@ use Throwable::X::Meta::Attribute::Payload;
 use Try::Tiny;
 
 use String::Errf qw(errf);
-
-sub single_init_arg_name { 'ident' }
-sub single_init_arg_type { 'Throwable::X::_VisibleStr' }
-around BUILDARGS => sub {
-  my $orig = shift;
-  my $self = shift;
-  return $self->$orig(@_) unless @_ == 1;
-
-  my $tc = Moose::Util::TypeConstraints::find_type_constraint(
-    $self->single_init_arg_type,
-  );
-
-  return $self->$orig(@_) unless $tc->check($_[0]);
-
-  return { $self->single_init_arg_name => $_[0] }
-};
-
-has is_public => (
-  is  => 'ro',
-  isa => 'Bool',
-  init_arg => 'public',
-  default  => 0,
-);
 
 tc_subtype 'Throwable::X::_VisibleStr',
   tc_as 'Str',
@@ -50,6 +26,21 @@ tc_subtype 'Throwable::X::_Ident',
 # something) that ensures that at least one is set and allows % in the ident as
 # long as an explicit message_fmt was given.  I think this is probably better.
 # -- rjbs, 2010-10-17
+
+with(
+  'Throwable',
+  'MooseX::OneArgNew' => {
+    type     => 'Throwable::X::_VisibleStr',
+    init_arg => 'ident',
+  },
+);
+
+has is_public => (
+  is  => 'ro',
+  isa => 'Bool',
+  init_arg => 'public',
+  default  => 0,
+);
 
 has ident => (
   is  => 'ro',
