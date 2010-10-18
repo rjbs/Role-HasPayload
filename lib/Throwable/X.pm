@@ -46,6 +46,10 @@ Throw the exception when you need to:
     my $error = $_;
 
     if ($error->does('Throwable::X') and $error->is_public) {
+
+      # Prints something like:
+      # invalid filename \usr\local\src for user home directory
+
       print $error->message, "\n\n", $error->stack_trace->as_string;
     }
   }
@@ -77,8 +81,12 @@ with(
   'Throwable',
   'Throwable::X::AutoPayload',
   'Throwable::X::WithIdent',
-  'Throwable::X::WithMessage::Errf',
   'Throwable::X::WithTags',
+
+  'Throwable::X::WithMessage::Errf' => {
+    default  => sub { $_[0]->ident },
+    lazy     => 1,
+  },
 
   'MooseX::OneArgNew' => {
     type     => 'Throwable::X::_VisibleStr',
