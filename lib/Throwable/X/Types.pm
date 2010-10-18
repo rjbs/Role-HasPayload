@@ -1,6 +1,14 @@
 use strict;
 use warnings;
 package Throwable::X::Types;
+# ABSTRACT: private types used by Throwable::X
+
+=head1 DESCRIPTION
+
+None of the types provided by Throwable::X::Types are meant for public
+consumption.  Please do not rely on them.  They are likely to change.
+
+=cut
 
 use Moose::Util::TypeConstraints;
 
