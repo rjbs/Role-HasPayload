@@ -9,6 +9,8 @@ use Test::More;
 
   with 'Throwable::X';
 
+  sub x_tags { qw(whatever) }
+
   has size => (
     is   => 'ro',
     isa  => 'Int',
@@ -53,8 +55,8 @@ use Test::More;
   );
 
   ok(
-    $err->has_tag('foo-bar') && $err->has_tag('zug') && ! $err->has_tag('xyz'),
-    "...and its tags seem correct",
+    $err->has_tag('foo-bar') && $err->has_tag('whatever') && ! $err->has_tag('xyz'),
+    "...and its tags seem correct via ->has_tag",
   );
 }
 
