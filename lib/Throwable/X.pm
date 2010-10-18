@@ -1,8 +1,7 @@
 package Throwable::X;
 use Moose::Role;
-with (
-  'Throwable',
-);
+with 'Throwable';
+# ABSTRACT: useful eXtra behavior for Throwable exceptions
 
 use namespace::autoclean;
 
@@ -30,6 +29,11 @@ tc_subtype 'Throwable::X::_VisibleStr',
 tc_subtype 'Throwable::X::_Ident',
   tc_as 'Throwable::X::_VisibleStr',
   tc_where { /\S/ && ! /[%\v]/ };
+
+# Another idea is to mark both lazy and then have a before BUILDALL (or
+# something) that ensures that at least one is set and allows % in the ident as
+# long as an explicit message_fmt was given.  I think this is probably better.
+# -- rjbs, 2010-10-17
 
 has ident => (
   is  => 'ro',
