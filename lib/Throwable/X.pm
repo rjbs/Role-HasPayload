@@ -138,7 +138,7 @@ send across the wire to remote clients.
 The C<throw> (or C<new>) method on a Throwable::X exception class can be passed
 a single string, in which case it will be used as the exception's C<ident>.
 This is (of course) only useful if no other attribute of the exception is
-required.
+required.  This feature is provided by L<MooseX::OneArgNew>.
 
 =cut
 
