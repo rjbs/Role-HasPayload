@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          another missing prereq; I think that's the last one...
 
 0.002     2010-10-19 14:26:28 America/New_York
           add missing prereq for Throwable

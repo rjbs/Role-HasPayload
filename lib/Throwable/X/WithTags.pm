@@ -1,5 +1,6 @@
 package Throwable::X::WithTags;
 use Moose::Role;
+# ABSTRACT: a thing with a list of tags
 
 use namespace::clean -except => 'meta';
 
