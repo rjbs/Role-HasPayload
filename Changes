@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.003     2010-10-19 21:59:07 America/New_York
           another missing prereq; I think that's the last one...
 
 0.002     2010-10-19 14:26:28 America/New_York
