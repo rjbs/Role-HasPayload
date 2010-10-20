@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.004     2010-10-20 11:38:07 America/New_York
           replace [\v] with [\x0d\x0a] to support antiquated perl 5 version 8
 
 0.003     2010-10-19 21:59:07 America/New_York
