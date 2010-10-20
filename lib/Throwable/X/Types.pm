@@ -22,7 +22,7 @@ subtype 'Throwable::X::_VisibleStr',
 # Let's not be too clever, just yet. -- rjbs, 2010-10-17
 subtype 'Throwable::X::_Ident',
   as 'Throwable::X::_VisibleStr',
-  where { /\S/ && ! /[%\v]/ };
+  where { /\S/ && ! /[%\x0d\x0a]/ };
 
 # Another idea is to mark both lazy and then have a before BUILDALL (or
 # something) that ensures that at least one is set and allows % in the ident as

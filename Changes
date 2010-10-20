@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          replace [\v] with [\x0d\x0a] to support antiquated perl 5 version 8
 
 0.003     2010-10-19 21:59:07 America/New_York
           another missing prereq; I think that's the last one...
