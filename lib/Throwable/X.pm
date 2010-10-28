@@ -71,9 +71,9 @@ in a half dozen roles to understand how to benefit from Throwable::X.
 =for :list
 * L<Throwable>
 * L<Throwable::X::AutoPayload>
-* L<Throwable::X::WithIdent>
 * L<Throwable::X::WithMessage::Errf>
-* L<Throwable::X::WithTags>
+* L<Role::Identifiable::HasIdent>
+* L<Role::Identifiable::HasTags>
 
 Note that this list does I<not> include L<StackTrace::Auto>.  Building a stack
 isn't needed in all scenarios, so if you want your exceptions to automatically
@@ -88,7 +88,7 @@ try to describe everything about the error, but serves as a unique identifier
 for the kind of exception being thrown.  Exception handlers looking for
 specific exceptions can then check the ident for known values.  It can also be
 used for refinement or localization of the message format, described below.
-This feature is provided by L<Throwable::X::WithIdent>.
+This feature is provided by L<Role::Identifiable::HasIdent>.
 
 For less specific identification of classes of exceptions, the exception can be
 checked for what roles it performs with C<does>, or its tags can be checked
@@ -96,7 +96,7 @@ with C<has_tag>.  All the tags reported by the C<x_tags> methods of every class
 and role in the exception's composition are present, as well as per-instance
 tags provided when the exception was thrown.  Tags as simple strings consisting
 of letters, numbers, and dashes.  This feature is provided by
-L<Throwable::X::WithTags>.
+L<Role::Identifiable::HasTags>.
 
 Throwable::X exceptions also have a message, which (unlike the C<ident>) is
 meant to be a human-readable string describing precisely what happened.  The
@@ -155,8 +155,8 @@ sub __payload { sub { 'Throwable::X::Meta::Attribute::Payload' } }
 with(
   'Throwable',
   'Throwable::X::AutoPayload',
-  'Throwable::X::WithIdent',
-  'Throwable::X::WithTags',
+  'Role::Identifiable::HasIdent',
+  'Role::Identifiable::HasTags',
 
   'Throwable::X::WithMessage::Errf' => {
     default  => sub { $_[0]->ident },

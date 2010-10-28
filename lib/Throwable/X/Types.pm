@@ -29,9 +29,4 @@ subtype 'Throwable::X::_Ident',
 # long as an explicit message_fmt was given.  I think this is probably better.
 # -- rjbs, 2010-10-17
 
-subtype 'Throwable::X::_Tag',
-  as 'Str',
-  where { /\A[-a-z0-9]+\z/ };
-
-
 1;
