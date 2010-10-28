@@ -71,7 +71,7 @@ in a half dozen roles to understand how to benefit from Throwable::X.
 =for :list
 * L<Throwable>
 * L<Throwable::X::AutoPayload>
-* L<Throwable::X::WithMessage::Errf>
+* L<Role::HasMessage::Errf>
 * L<Role::Identifiable::HasIdent>
 * L<Role::Identifiable::HasTags>
 
@@ -106,7 +106,7 @@ the C<payload> (described below) to produce a filled-in string when the
 C<message> method is called.  (The L<synopsis|/SYNOPSIS> above gives a very
 simple example of how this works, but the String::Errf documentation is more
 useful, generally.)  This feature is provided by
-L<Throwable::X::WithMessage::Errf>.
+L<Role::HasMessage::Errf>.
 
 =head2 Features for Serialization
 
@@ -158,7 +158,7 @@ with(
   'Role::Identifiable::HasIdent',
   'Role::Identifiable::HasTags',
 
-  'Throwable::X::WithMessage::Errf' => {
+  'Role::HasMessage::Errf' => {
     default  => sub { $_[0]->ident },
     lazy     => 1,
   },
