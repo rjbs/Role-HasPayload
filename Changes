@@ -1,17 +1,4 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
-
-0.004     2010-10-20 11:38:07 America/New_York
-          replace [\v] with [\x0d\x0a] to support antiquated perl 5 version 8
-
-0.003     2010-10-19 21:59:07 America/New_York
-          another missing prereq; I think that's the last one...
-
-0.002     2010-10-19 14:26:28 America/New_York
-          add missing prereq for Throwable
-
-0.001     2010-10-18 21:44:13 America/New_York
-
-          first release
-
+          spun off of Throwable-X 0.004
