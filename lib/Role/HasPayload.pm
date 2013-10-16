@@ -17,3 +17,4 @@ implementations of pre-built payload behavior are bundled with Role-HasPayload:
 requires 'payload';
 
 no Moose::Role;
+1;
